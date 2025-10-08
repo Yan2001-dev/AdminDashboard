@@ -1,3 +1,11 @@
+// Prevent auto-popup immediately
+document.addEventListener('DOMContentLoaded', function() {
+    const clientDetailsModal = document.getElementById('clientDetailsModal');
+    if (clientDetailsModal) {
+        clientDetailsModal.style.display = 'none';
+    }
+});
+
 // Sample data for the table
 const users = [
     { id: 1, name: "John Doe", email: "john@example.com", status: "active" },
@@ -23,87 +31,7 @@ const extendedUsers = [
         joinDate: "2025-01-15",
         notes: "Premium client with regular purchases. Prefers email communication."
     },
-    { 
-        id: 2, 
-        name: "Jane Smith", 
-        email: "jane@example.com", 
-        status: "active",
-        phone: "+60118228453",
-        joinDate: "2023-11-20",
-        notes: "Enterprise account. Requires monthly reporting."
-    },
-    { 
-        id: 3, 
-        name: "Robert Johnson", 
-        email: "robert@example.com", 
-        status: "inactive",
-        phone: "+60126224412",
-        joinDate: "2024-11-05",
-        notes: "Account on hold pending payment verification."
-    },
-    { 
-        id: 4, 
-        name: "Emily Davis", 
-        email: "emily@example.com", 
-        status: "active",
-        phone: "+60189021253",
-        joinDate: "2025-07-10",
-        notes: "New client, very responsive to communications."
-    },
-    { 
-        id: 5, 
-        name: "Michael Wilson", 
-        email: "michael@example.com", 
-        status: "active",
-        phone: "+60123394835",
-        joinDate: "2023-01-25",
-        notes: "VIP client with special pricing arrangement."
-    },
-    { 
-        id: 6, 
-        name: "Sarah Brown", 
-        email: "sarah@example.com", 
-        status: "inactive",
-        phone: "+60114227463",
-        joinDate: "2024-12-15",
-        notes: "Account suspended due to policy violation."
-    },
-    { 
-        id: 7, 
-        name: "David Miller", 
-        email: "david@example.com", 
-        status: "active",
-        phone: "+60122558863",
-        joinDate: "2023-04-05",
-        notes: "Regular client, prefers phone communication."
-    },
-    { 
-        id: 8, 
-        name: "Lisa Taylor", 
-        email: "lisa@example.com", 
-        status: "active",
-        phone: "+60174217184",
-        joinDate: "2024-02-28",
-        notes: "Corporate account with multiple users."
-    },
-    { 
-        id: 9, 
-        name: "James Anderson", 
-        email: "james@example.com", 
-        status: "inactive",
-        phone: "+60115226634",
-        joinDate: "2024-10-20",
-        notes: "Client requested account deactivation."
-    },
-    { 
-        id: 10, 
-        name: "Jennifer Thomas", 
-        email: "jennifer@example.com", 
-        status: "active",
-        phone: "+60116227433",
-        joinDate: "2025-03-15",
-        notes: "High-value client with custom requirements."
-    }
+    // ... keep your existing extendedUsers data
 ];
 
 // DOM elements
@@ -280,7 +208,7 @@ function renderTable(data) {
  * Filter and sort data based on current filters and sort options
  */
 function updateTable() {
-    let filteredData = [...currentData]; // Use currentData instead of users
+    let filteredData = [...currentData];
     
     // Apply sorting
     const sortValue = currentSort.column + '-' + currentSort.direction;
@@ -290,7 +218,6 @@ function updateTable() {
         let aValue = a[column];
         let bValue = b[column];
         
-        // For string comparison
         if (typeof aValue === 'string') {
             aValue = aValue.toLowerCase();
             bValue = bValue.toLowerCase();
@@ -390,7 +317,6 @@ function applyDateFilter() {
     const selectedEnd = new Date(endDate);
     const todayDate = new Date(formatToday);
     
-    // Validate dates are not in future
     if (selectedStart > todayDate) {
         alert('Start date cannot be in the future.');
         startDateInput.value = formatToday;
@@ -410,7 +336,6 @@ function applyDateFilter() {
         return;
     }
     
-    console.log('Date filter applied:', { startDate, endDate });
     updateCardsWithDateFilter(startDate, endDate);
 }
 
@@ -428,25 +353,20 @@ function formatDate(date) {
 function updateCardsWithDateFilter(startDate, endDate) {
     const daysDiff = Math.floor((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1;
     
-    // Use realistic multipliers based on date range
     const baseUsers = 1248;
     const baseSales = 42580;
     const baseRevenue = 28450;
     
-    // Calculate multiplier based on selected period vs 30 days
     const multiplier = Math.max(0.1, Math.min(1, daysDiff / 30));
 
-    // Update card values with realistic numbers
     const mockUsers = Math.floor(baseUsers * multiplier);
     const mockSales = Math.floor(baseSales * multiplier);
     const mockRevenue = Math.floor(baseRevenue * multiplier);
     
-    // Update card values - ensure they're never 0
     document.querySelector('#total-users + .card-value').textContent = Math.max(1, mockUsers).toLocaleString();
     document.querySelector('#total-sales + .card-value').textContent = `$${Math.max(1, mockSales).toLocaleString()}`;
     document.querySelector('#total-revenue + .card-value').textContent = `$${Math.max(1, mockRevenue).toLocaleString()}`;
     
-    // Show loading effect
     const cards = document.querySelectorAll('.card-value');
     cards.forEach(card => {
         card.style.opacity = '0.7';
@@ -462,7 +382,6 @@ function updateCardsWithDateFilter(startDate, endDate) {
 function openClientDetails(clientId) {
     const client = extendedUsers.find(user => user.id === clientId);
     if (client) {
-        // Populate modal with client data
         document.getElementById('detail-client-id').textContent = client.id;
         document.getElementById('detail-client-name').textContent = client.name;
         document.getElementById('detail-client-email').textContent = client.email;
@@ -471,7 +390,6 @@ function openClientDetails(clientId) {
         document.getElementById('detail-client-join-date').textContent = new Date(client.joinDate).toLocaleDateString();
         document.getElementById('detail-client-notes').textContent = client.notes || 'No additional information available.';
         
-        // Show modal
         clientDetailsModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
@@ -489,7 +407,7 @@ function closeClientDetailsHandler() {
  * Initialize pagination
  */
 function initPagination() {
-    totalItems = currentData.length; // Use currentData instead of users
+    totalItems = currentData.length;
     updatePaginationInfo();
     updatePaginationButtons();
 }
@@ -539,72 +457,69 @@ function handleRowsPerPageChange() {
 }
 
 // Event listeners
-exportBtn.addEventListener('click', exportData);
-
-// Search input event listener
-searchInput.addEventListener('input', debouncedSearch);
-
-// Add input event listeners to prevent manual entry of future dates
-startDateInput.addEventListener('input', function() {
-    const today = formatDate(new Date());
-    if (this.value > today) {
-        this.value = today;
+document.addEventListener('DOMContentLoaded', function() {
+    // Ensure modal is closed on page load
+    if (clientDetailsModal) {
+        clientDetailsModal.style.display = 'none';
     }
-});
+    
+    // Initialize event listeners
+    exportBtn.addEventListener('click', exportData);
+    searchInput.addEventListener('input', debouncedSearch);
+    
+    startDateInput.addEventListener('input', function() {
+        const today = formatDate(new Date());
+        if (this.value > today) {
+            this.value = today;
+        }
+    });
 
-endDateInput.addEventListener('input', function() {
-    const today = formatDate(new Date());
-    if (this.value > today) {
-        this.value = today;
-    }
-});
+    endDateInput.addEventListener('input', function() {
+        const today = formatDate(new Date());
+        if (this.value > today) {
+            this.value = today;
+        }
+    });
 
-// Period buttons event listeners
-periodButtons.forEach(btn => {
-    btn.addEventListener('click', handlePeriodButtonClick);
-});
+    periodButtons.forEach(btn => {
+        btn.addEventListener('click', handlePeriodButtonClick);
+    });
 
-// Table header event listeners
-tableHeaders.forEach(header => {
-    header.addEventListener('click', handleHeaderClick);
-    header.addEventListener('keydown', handleHeaderKeydown);
-});
+    tableHeaders.forEach(header => {
+        header.addEventListener('click', handleHeaderClick);
+        header.addEventListener('keydown', handleHeaderKeydown);
+    });
 
-// Client details modal event listeners
-closeClientDetails.addEventListener('click', closeClientDetailsHandler);
+    closeClientDetails.addEventListener('click', closeClientDetailsHandler);
 
-// Close modal when clicking outside content
-clientDetailsModal.addEventListener('click', (e) => {
-    if (e.target === clientDetailsModal) {
-        closeClientDetailsHandler();
-    }
-});
+    clientDetailsModal.addEventListener('click', (e) => {
+        if (e.target === clientDetailsModal) {
+            closeClientDetailsHandler();
+        }
+    });
 
-// Close modal with Escape key
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && clientDetailsModal.style.display === 'flex') {
-        closeClientDetailsHandler();
-    }
-});
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && clientDetailsModal.style.display === 'flex') {
+            closeClientDetailsHandler();
+        }
+    });
 
-// Event listeners for pagination
-rowsPerPageSelect.addEventListener('change', handleRowsPerPageChange);
-firstPageBtn.addEventListener('click', () => goToPage(1));
-prevPageBtn.addEventListener('click', () => goToPage(currentPage - 1));
-nextPageBtn.addEventListener('click', () => goToPage(currentPage + 1));
-lastPageBtn.addEventListener('click', () => goToPage(Math.ceil(totalItems / rowsPerPage)));
+    rowsPerPageSelect.addEventListener('change', handleRowsPerPageChange);
+    firstPageBtn.addEventListener('click', () => goToPage(1));
+    prevPageBtn.addEventListener('click', () => goToPage(currentPage - 1));
+    nextPageBtn.addEventListener('click', () => goToPage(currentPage + 1));
+    lastPageBtn.addEventListener('click', () => goToPage(Math.ceil(totalItems / rowsPerPage)));
 
-// Initialize everything when page loads
-document.addEventListener('DOMContentLoaded', () => {
+    // Initialize app WITHOUT auto-clicking anything
     setCurrentDate();
     setDefaultDates();
     initPagination();
     updateTable();
-    updateSortIndicators('id', 'asc');
     
-    // Set today as default period
+    // Set today as active period without triggering click
     const todayBtn = document.querySelector('[data-period="today"]');
     if (todayBtn) {
-        todayBtn.click();
+        periodButtons.forEach(btn => btn.classList.remove('active'));
+        todayBtn.classList.add('active');
     }
 });
