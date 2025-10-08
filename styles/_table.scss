@@ -1,0 +1,244 @@
+.table-section {
+  @include card-style;
+  overflow: hidden;
+
+  &:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .table-header {
+    @include flex-between;
+    align-items: center;
+    padding: 1rem 0rem 1.75rem 0rem;
+    border-bottom: 1px solid #eee;
+
+    .section-title {
+      margin-bottom: 0;
+      color: $secondary-color;
+      font-size: 1.5rem;
+      text-align: left;
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 1rem;
+      margin-left: auto;
+
+      .table-search-container {
+        position: relative;
+        @include flex-center;
+
+        .clear-search-btn {
+          position: absolute;
+          right: 8px;
+          @include button-reset;
+          color: #666;
+          cursor: pointer;
+          padding: 4px;
+          border-radius: 50%;
+          transition: $transition;
+
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: #333;
+          }
+        }
+
+        .search-input {
+          padding: 0.5rem 1rem 0.5rem 2.5rem;
+          border: 1px solid #ddd;
+          border-radius: $border-radius;
+          font-size: 0.875rem;
+          width: 320px;
+
+          &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
+          }
+        }
+
+        .search-icon {
+          position: absolute;
+          left: 0.75rem;
+          color: #666;
+          z-index: 1;
+        }
+      }
+    }
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th:first-child,
+  td:first-child {
+    width: 80px;
+    max-width: 80px;
+  }
+
+  th:nth-child(2),
+  td:nth-child(2),
+  th:nth-child(3),
+  td:nth-child(3),
+  th:nth-child(4),
+  td:nth-child(4),
+  th:nth-child(5),
+  td:nth-child(5) {
+    width: auto;
+  }
+
+  th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: $dark-color;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      background-color: #e9ecef;
+    }
+  }
+}
+
+.sort-indicator {
+  margin-left: 0.5rem;
+  font-size: 1rem;
+
+  .bi {
+    color: #666;
+  }
+
+  .bi-sort-up,
+  .bi-sort-alpha-up {
+    display: none;
+  }
+
+  .bi-sort-down,
+  .bi-sort-alpha-down {
+    display: inline;
+  }
+
+  &.asc {
+    .bi-sort-up,
+    .bi-sort-alpha-up {
+      display: inline;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .bi-sort-down,
+    .bi-sort-alpha-down {
+      display: none;
+    }
+  }
+
+  &.desc .bi-sort-down,
+  &.desc .bi-sort-alpha-down {
+    color: #000;
+    font-weight: bold;
+  }
+}
+
+.status-active {
+  color: $success-color;
+}
+
+.status-inactive {
+  color: $danger-color;
+}
+
+.details-link {
+  color: $primary-color;
+  text-decoration: none;
+  font-weight: normal;
+  transition: $transition;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+
+  &:hover {
+    color: $nav-hover-color;
+    background-color: rgba($primary-color, 0.1);
+    text-decoration: underline;
+  }
+}
+
+.table-pagination {
+  @include flex-between;
+  align-items: center;
+  padding: 1rem 0;
+  margin-top: 1rem;
+  border-top: 1px solid #eee;
+
+  .pagination-info {
+    color: #666;
+    font-size: 0.875rem;
+  }
+
+  .pagination-controls {
+    @include flex-center;
+    gap: 1rem;
+
+    .rows-per-page {
+      @include flex-center;
+      gap: 0.5rem;
+
+      label {
+        color: #666;
+        font-size: 0.875rem;
+      }
+
+      .rows-select {
+        padding: 0.25rem 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        background-color: white;
+      }
+    }
+
+    .page-navigation {
+      @include flex-center;
+      gap: 0.5rem;
+
+      .pagination-btn {
+        @include button-reset;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 0.25rem 0.5rem;
+        transition: $transition;
+        @include flex-center;
+        min-width: 32px;
+        height: 32px;
+
+        &:hover:not(:disabled) {
+          background-color: rgba($primary-color, 0.1);
+          border-color: $primary-color;
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+
+      .page-info {
+        color: #666;
+        font-size: 0.875rem;
+        margin: 0 0.5rem;
+      }
+    }
+  }
+}

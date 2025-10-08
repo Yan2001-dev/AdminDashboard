@@ -1,0 +1,119 @@
+.main-content-wrapper {
+  flex: 1;
+  @include flex-column;
+  min-width: 0;
+  background-color: #f5f7fa;
+}
+
+.top-header {
+  background-color: white;
+  color: $secondary-color;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  border-bottom: 1px solid #e9ecef;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: $sidebar-width;
+  height: $header-height;
+  @include flex-center;
+
+  .header-content {
+    @include flex-between;
+    align-items: center;
+    width: 100%;
+    max-width: calc(1400px - $sidebar-width);
+    margin: 0 auto;
+
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: $secondary-color;
+      margin: 0;
+    }
+
+    .header-actions {
+      @include flex-center;
+      gap: 1rem;
+
+      .btn-icon {
+        @include button-reset;
+        color: $secondary-color;
+        font-size: 1.25rem;
+        padding: 0.5rem;
+        border-radius: 50%;
+        transition: $transition;
+        position: relative;
+
+        &:hover {
+          background-color: transparent;
+          color: $secondary-color;
+        }
+
+        .notification-badge {
+          position: absolute;
+          top: 0;
+          right: 0;
+          background-color: $danger-color;
+          color: white;
+          font-size: 0.7rem;
+          padding: 0.2rem 0.4rem;
+          border-radius: 50%;
+          min-width: 18px;
+          height: 18px;
+          @include flex-center;
+        }
+      }
+
+      .admin-profile {
+        @include flex-center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-radius: $border-radius;
+        transition: $transition;
+
+        &:hover {
+          background-color: transparent;
+        }
+
+        .admin-avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid $primary-color;
+        }
+
+        .admin-name {
+          display: block !important;
+          font-weight: 500;
+          color: $secondary-color;
+          font-size: 0.95rem;
+        }
+      }
+    }
+  }
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: $transition;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.1);
+    color: $primary-color;
+  }
+}
